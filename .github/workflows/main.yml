@@ -52,18 +52,10 @@ jobs:
            command: quickview,cves
            only-severities: critical,high
            sarif-file: scout-report.sarif
-           jobs:
-  image_scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.REPO_USER }}
-          password: ${{ secrets.REPO_PWD }}
-
-      # Additional steps for building and scanning the Docker image
-
+    
+       - name: Upload Artifact
+         uses: actions/upload-artifact@v3
+         if: always()
+         with:
+           name: docker-scout-findings
+           path: scout-report.sarif
